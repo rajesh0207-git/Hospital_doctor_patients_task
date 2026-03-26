@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, Boolean, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, Float, String, Boolean, ForeignKey, DateTime, UniqueConstraint
 from datetime import datetime
 from app.db.base import Base
 
@@ -10,6 +10,9 @@ class Billing(Base):
     patient_id = Column(Integer, ForeignKey("patients.id"))
     doctor_id = Column(Integer, ForeignKey("doctors.id"))
     appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=True)
+    __table_args__ = (
+        UniqueConstraint("appointment_id", name="unique_appointment_billing"),
+    )
 
     consultation_fee = Column(Float, nullable=False)
     additional_charges = Column(Float, default=0)
